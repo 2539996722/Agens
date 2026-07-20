@@ -1,0 +1,131 @@
+/* ==========================================================================
+   themes.css — note color modifiers + decorative stripes
+   ========================================================================== */
+
+/* explicit color classes (override nth-of-type) */
+.note--yellow { background: var(--note-yellow); }
+.note--pink   { background: var(--note-pink); }
+.note--blue   { background: var(--note-blue); }
+.note--green  { background: var(--note-green); }
+.note--purple { background: var(--note-purple); }
+.note--orange { background: var(--note-orange); }
+.note--white  { background: #fffdf5; }
+
+/* semantic notes */
+.note--ok    { background: var(--note-green); border-color: #2f7a2a; }
+.note--err   { background: #ffd6d6; border-color: #b84545; }
+.note--info  { background: var(--note-blue); }
+
+/* ---------- decorative stripes ---------------------------------------- */
+.bg-stripe-blue {
+  background:
+    repeating-linear-gradient(
+      45deg,
+      var(--note-blue) 0 12px,
+      #cfe6ff 12px 24px
+    );
+}
+.bg-stripe-green {
+  background:
+    repeating-linear-gradient(
+      45deg,
+      var(--note-green) 0 12px,
+      #cfeed8 12px 24px
+    );
+}
+.bg-stripe-pink {
+  background:
+    repeating-linear-gradient(
+      45deg,
+      var(--note-pink) 0 12px,
+      #ffd2df 12px 24px
+    );
+}
+.bg-stripe-yellow {
+  background:
+    repeating-linear-gradient(
+      45deg,
+      var(--note-yellow) 0 12px,
+      #ffe88f 12px 24px
+    );
+}
+
+/* ---------- highlight text -------------------------------------------- */
+.hl-yellow { background: linear-gradient(transparent 60%, var(--note-yellow) 60%); padding: 0 2px; }
+.hl-pink   { background: linear-gradient(transparent 60%, var(--note-pink) 60%); padding: 0 2px; }
+.hl-blue   { background: linear-gradient(transparent 60%, var(--note-blue) 60%); padding: 0 2px; }
+.hl-green  { background: linear-gradient(transparent 60%, var(--note-green) 60%); padding: 0 2px; }
+
+/* ---------- "tag" pills (for categories in tool calls etc.) ----------- */
+.tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  border: 1.5px solid var(--ink);
+  font-size: 0.82rem;
+  background: #fffdf5;
+  font-family: var(--font-subtitle);
+}
+
+/* ---------- markdown rendered output ---------------------------------- */
+.md h1, .md h2, .md h3, .md h4 {
+  font-family: var(--font-title);
+  margin-top: 0.8em;
+}
+.md h1 { font-size: 2.2rem; }
+.md h2 {
+  font-size: 1.7rem;
+  border-bottom: 2.5px dashed var(--ink);
+  padding-bottom: 6px;
+  margin-top: 1.4em;
+}
+.md h3 { font-size: 1.4rem; }
+.md h4 { font-size: 1.2rem; }
+.md p  { margin: 0.8em 0; }
+.md ul, .md ol { padding-left: 1.6em; margin: 0.6em 0; }
+.md li::marker { color: var(--ink-muted); }
+.md blockquote {
+  margin: 1em 0;
+  padding: 8px 16px;
+  background: var(--note-yellow);
+  border-left: 6px solid var(--ink);
+  border-radius: 4px 10px 4px 10px;
+  font-style: italic;
+}
+.md hr {
+  border: none;
+  height: 12px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 12' preserveAspectRatio='none'><path d='M0,6 Q15,1 30,6 T60,6 T90,6 T120,6' fill='none' stroke='%231f2a44' stroke-width='2' stroke-linecap='round'/></svg>") repeat-x;
+  background-size: 120px 12px;
+  opacity: 0.7;
+  margin: 1.6em 0;
+}
+.md a { color: #34406a; }
+.md table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+  font-size: 0.95em;
+}
+.md th, .md td {
+  border: 2px solid var(--ink);
+  padding: 6px 10px;
+  text-align: left;
+}
+.md th {
+  background: var(--note-yellow);
+  font-family: var(--font-subtitle);
+}
+.md code {
+  background: rgba(31, 42, 68, 0.08);
+  border-radius: 4px;
+  padding: 1px 6px;
+}
+.md pre {
+  background: #fffdf5;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-sketch-soft);
+  padding: 12px 16px;
+  overflow-x: auto;
+}
+.md pre code { background: transparent; padding: 0; }

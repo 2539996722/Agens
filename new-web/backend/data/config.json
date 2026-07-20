@@ -1,0 +1,13 @@
+{
+  "llm": {
+    "base_url": "https://api.minimaxi.com/v1",
+    "api_key": "sk-cp-1o2O1Q6Vx-BlQ3yV8XBcip3rWB3jAJ-G8X7P99USylLHLZbNmPaMLeGTXOpvSvtF92fQcgJoqEL6kGJp3aqU6btiTQ2IrRTh4XA4gPrgtCuN8WiB8M1BbO4",
+    "model": "MiniMax-M3",
+    "use_reasoning_split": true
+  },
+  "amap": {
+    "api_key": "934796c6b0af7d35a6d1785c87ccedf4",
+    "security_jscode": "",
+    "sse_url": ""
+  }
+}

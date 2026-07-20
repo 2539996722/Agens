@@ -1,0 +1,13 @@
+{
+  "llm": {
+    "base_url": "",
+    "api_key": "",
+    "model": "MiniMax-M3",
+    "use_reasoning_split": true
+  },
+  "amap": {
+    "api_key": "",
+    "security_jscode": "",
+    "sse_url": ""
+  }
+}

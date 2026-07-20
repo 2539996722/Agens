@@ -1,0 +1,449 @@
+/* ==========================================================================
+   components.css — 按钮、输入框、复选框、芯片、徽章、加载器
+   升级重点：更大的可点击区域、更清晰的层级、更柔和的视觉
+   ========================================================================== */
+
+/* ---------- 按钮 ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 24px;
+  font-family: var(--font-subtitle);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--ink);
+  background: var(--note-yellow);
+  border: 2.5px solid var(--ink);
+  border-radius: var(--radius-sketch);
+  box-shadow: var(--shadow-hard-sm);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  text-decoration: none;
+  line-height: 1.2;
+}
+
+.btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+  background: var(--note-yellow);
+}
+
+.btn:active {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 4px 4px 0 var(--ink), 0 0 0 3px rgba(255, 230, 120, 0.6);
+}
+
+.btn[disabled],
+.btn.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+  box-shadow: 3px 3px 0 var(--ink);
+  background: #fffdf5;
+}
+
+.btn--primary { background: var(--note-pink); }
+.btn--primary:hover { background: #ffd4e2; }
+.btn--blue    { background: var(--note-blue); }
+.btn--blue:hover { background: #c8e4ff; }
+.btn--green   { background: var(--note-green); }
+.btn--green:hover { background: #caf0c5; }
+.btn--purple  { background: var(--note-purple); }
+.btn--orange  { background: var(--note-orange); }
+.btn--ghost   { background: #fffdf5; }
+.btn--danger  { background: #ffd6d6; }
+.btn--danger:hover { background: #ffc2c2; }
+
+.btn--sm { padding: 7px 16px; font-size: 0.92rem; box-shadow: 2px 2px 0 var(--ink); }
+.btn--sm:hover { box-shadow: 4px 4px 0 var(--ink); }
+.btn--lg { padding: 14px 32px; font-size: 1.2rem; box-shadow: 5px 5px 0 var(--ink); }
+.btn--lg:hover { box-shadow: 8px 8px 0 var(--ink); }
+.btn--block { width: 100%; }
+
+/* ---------- 输入框 ---------- */
+.input,
+textarea.input,
+select.input {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  font-family: var(--font-hand);
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--ink);
+  background: #fffdf5;
+  border: 2.5px dashed var(--ink);
+  border-radius: var(--radius-sketch-soft);
+  outline: none;
+  caret-color: #4a78d9;
+  box-shadow: none;
+  transition:
+    border-style var(--t-fast) var(--ease-out),
+    background-color var(--t-fast) var(--ease-out),
+    box-shadow var(--t-base) var(--ease-bounce);
+}
+
+textarea.input {
+  min-height: 84px;
+  resize: vertical;
+  line-height: 1.55;
+}
+
+select.input {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--ink) 50%),
+    linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 55%, calc(100% - 13px) 55%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 36px;
+}
+
+.input:hover,
+textarea.input:hover,
+select.input:hover {
+  background: #fff;
+}
+
+.input:focus,
+textarea.input:focus,
+select.input:focus {
+  border-style: solid;
+  background: #ffffff;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.input::placeholder {
+  color: rgba(31, 42, 68, 0.45);
+  font-style: italic;
+}
+
+/* number input 微调按钮更清晰 */
+input[type="number"].input {
+  -moz-appearance: textfield;
+}
+input[type="number"].input::-webkit-outer-spin-button,
+input[type="number"].input::-webkit-inner-spin-button {
+  opacity: 1;
+  height: 32px;
+}
+
+/* field wrapper */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.field > label,
+.field-label {
+  font-family: var(--font-subtitle);
+  font-weight: 700;
+  font-size: 0.98rem;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.2px;
+}
+
+.field-hint {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
+  margin-top: 2px;
+  line-height: 1.5;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  align-items: end;
+}
+@media (max-width: 560px) {
+  .field-row { grid-template-columns: 1fr; }
+}
+
+/* ---------- 芯片（多选 pill）---------- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background: #fffdf5;
+  color: var(--ink);
+  border: 2.5px solid var(--ink);
+  border-radius: 20px;
+  font-family: var(--font-hand);
+  font-size: 1rem;
+  font-weight: 400;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 2px 2px 0 var(--ink);
+  transition:
+    transform var(--t-fast) var(--ease-bounce),
+    box-shadow var(--t-fast) var(--ease-bounce),
+    background-color var(--t-fast) var(--ease-out);
+}
+
+.chip:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--ink);
+  background: #fff;
+}
+
+.chip:active {
+  transform: translate(0, 0);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.chip.is-active {
+  background: var(--note-blue);
+  font-weight: 700;
+  box-shadow: 4px 4px 0 var(--ink);
+  transform: rotate(-1deg);
+}
+.chip.is-active.chip--pink   { background: var(--note-pink); }
+.chip.is-active.chip--green  { background: var(--note-green); }
+.chip.is-active.chip--purple { background: var(--note-purple); }
+.chip.is-active.chip--orange { background: var(--note-orange); }
+.chip.is-active.chip--yellow { background: var(--note-yellow); }
+
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* ---------- 复选框（手绘 SVG）---------- */
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  font-family: var(--font-hand);
+  font-size: 1rem;
+  padding: 4px 0;
+}
+
+.checkbox input { position: absolute; opacity: 0; pointer-events: none; }
+
+.checkbox .box {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border: 2.5px solid var(--ink);
+  border-radius: 4px 10px 4px 10px;
+  background: #fffdf5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 0 var(--ink);
+  transition: transform var(--t-fast) var(--ease-bounce),
+              background-color var(--t-fast) var(--ease-out);
+}
+
+.checkbox .box svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--ink);
+  stroke-width: 3.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+  transform: scale(0.4);
+  transition: all 240ms var(--ease-bounce);
+}
+
+.checkbox input:checked + .box {
+  background: var(--note-green);
+}
+.checkbox input:checked + .box svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.checkbox input:focus-visible + .box {
+  outline: 2px dashed var(--ink);
+  outline-offset: 3px;
+}
+
+.checkbox:hover .box { transform: rotate(-4deg); }
+
+/* ---------- 开关（toggle）---------- */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 56px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.switch .track {
+  position: absolute;
+  inset: 0;
+  background: #fffdf5;
+  border: 2.5px solid var(--ink);
+  border-radius: 30px;
+  box-shadow: 2px 2px 0 var(--ink);
+  transition: background-color var(--t-fast) var(--ease-out);
+}
+
+.switch .knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  background: var(--note-yellow);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  box-shadow: 1px 1px 0 var(--ink);
+  transition: transform var(--t-base) var(--ease-bounce),
+              background-color var(--t-fast) var(--ease-out);
+}
+
+.switch input:checked + .track { background: var(--note-green); }
+.switch input:checked + .track .knob {
+  transform: translateX(26px);
+  background: #fffdf5;
+}
+.switch input:focus-visible + .track {
+  outline: 2px dashed var(--ink);
+  outline-offset: 3px;
+}
+
+.field-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-hand);
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ---------- 加载点 ---------- */
+.loader {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-subtitle);
+  font-weight: 600;
+  color: var(--ink-soft);
+  font-size: 1rem;
+  padding: 8px 14px;
+  background: rgba(255, 253, 245, 0.7);
+  border-radius: var(--radius-sketch-soft);
+}
+.loader .dots { display: inline-flex; gap: 6px; }
+.loader .dot {
+  width: 10px; height: 10px;
+  background: var(--ink);
+  border-radius: 50%;
+  animation: loader-bounce 1.1s var(--ease-bounce) infinite;
+}
+.loader .dot:nth-child(2) { animation-delay: 0.15s; }
+.loader .dot:nth-child(3) { animation-delay: 0.30s; }
+
+@keyframes loader-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30%           { transform: translateY(-8px); opacity: 1; }
+}
+
+/* ---------- 徽章 ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 12px;
+  font-family: var(--font-subtitle);
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 20px;
+  border: 2px solid var(--ink);
+  background: #fffdf5;
+  line-height: 1.3;
+}
+.badge--ok    { background: var(--note-green); }
+.badge--err   { background: #ffd6d6; }
+.badge--info  { background: var(--note-blue); }
+.badge--pink  { background: var(--note-pink); }
+.badge--yellow { background: var(--note-yellow); }
+
+/* ---------- 密码显隐按钮 ---------- */
+.password-wrap {
+  position: relative;
+}
+.password-wrap .input { padding-right: 46px; }
+.password-toggle {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--note-yellow);
+  border: 2px solid var(--ink);
+  border-radius: 12px 4px 12px 4px;
+  padding: 3px 9px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: var(--ink);
+  box-shadow: 1px 1px 0 var(--ink);
+  line-height: 1;
+}
+.password-toggle:hover {
+  transform: translateY(-50%) translate(-1px, -1px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.password-toggle:active {
+  transform: translateY(-50%) translate(0, 0);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+/* ---------- spinner 圆环 ---------- */
+.spinner {
+  width: 18px; height: 18px;
+  border: 3px solid var(--ink);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- 分割线（手绘风）---------- */
+.sketch-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 22px 0 18px;
+  font-family: var(--font-subtitle);
+  font-size: 1.05rem;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+.sketch-divider::before,
+.sketch-divider::after {
+  content: "";
+  flex: 1;
+  height: 8px;
+  background:
+    radial-gradient(circle, var(--ink) 1.5px, transparent 1.5px) 0 50% / 14px 8px repeat-x;
+  opacity: 0.4;
+}

@@ -1,0 +1,242 @@
+/* ==========================================================================
+   base.css — 全局基础、字体、颜色变量、排版
+   设计目标：保留手绘灵魂（便签/硬投影/弹性动画），同时保证正文清晰可读
+   ========================================================================== */
+
+:root {
+  /* ===== 字体策略 =====
+     - --font-hand：正文（清晰优先 + 手写感）—— 优先系统中易得的手写体，
+       最后回退到 system-ui 保证清晰可读
+     - --font-title：标题（手写感强 + 中文友好）
+     - --font-mono：代码/技术字段（等宽清晰）
+  */
+  --font-hand:
+    "Segoe Print", "Bradley Hand", "Comic Sans MS", "Marker Felt",
+    "Hannotate SC", "Yuanti SC", "STXingkai", "Kaiti SC", "楷体",
+    "PingFang SC", "Microsoft YaHei", system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --font-title:
+    "Caveat", "Segoe Print", "Bradley Hand", "Comic Sans MS",
+    "Hannotate SC", "Yuanti SC", "STXingkai", "Kaiti SC", "楷体",
+    "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-subtitle:
+    "Kalam", "Segoe Print", "Comic Sans MS",
+    "Hannotate SC", "Yuanti SC", "Kaiti SC", "楷体",
+    "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono:
+    "JetBrains Mono", "Fira Code", "Cascadia Code", "Source Code Pro",
+    "Consolas", "Monaco", "Courier New", monospace;
+
+  /* ===== 墨水色（深蓝灰）==== */
+  --ink: #1f2a44;
+  --ink-soft: rgba(31, 42, 68, 0.78);
+  --ink-muted: rgba(31, 42, 68, 0.55);
+  --ink-faint: rgba(31, 42, 68, 0.35);
+
+  /* ===== 纸张色（暖白）==== */
+  --paper: #fbf7ed;
+  --paper-warm: #f5efd9;
+  --line: rgba(31, 42, 68, 0.08);
+
+  /* ===== 便签 6 色（粉彩）==== */
+  --note-yellow: #fff6c4;
+  --note-pink:   #ffe1ec;
+  --note-blue:   #dff0ff;
+  --note-green:  #dff7d8;
+  --note-purple: #ece1ff;
+  --note-orange: #ffe1c4;
+
+  /* ===== 语义色 ===== */
+  --ok: #5cb85c;
+  --warn: #f0ad4e;
+  --err: #d96565;
+  --info: #5b9bd5;
+
+  /* ===== 几何 ===== */
+  --radius-sketch: 2px 14px 2px 14px;
+  --radius-sketch-alt: 14px 2px 14px 2px;
+  --radius-sketch-soft: 4px 10px 4px 10px;
+  --radius-round: 999px;
+
+  /* ===== 阴影（硬投影 = 手绘感）==== */
+  --shadow-hard: 6px 6px 0 var(--ink);
+  --shadow-hard-sm: 4px 4px 0 var(--ink);
+  --shadow-hard-lg: 8px 8px 0 var(--ink);
+  --shadow-soft: 0 4px 16px rgba(31, 42, 68, 0.12);
+
+  /* ===== 动效 ===== */
+  --ease-bounce: cubic-bezier(.34, 1.56, .64, 1);
+  --ease-out: cubic-bezier(.22, .61, .36, 1);
+  --t-fast: 180ms;
+  --t-base: 280ms;
+  --t-slow: 480ms;
+
+  /* ===== 布局尺寸 ===== */
+  --nav-h: 68px;
+  --max-w: 1180px;
+}
+
+/* ---------- reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; min-height: 100%; }
+
+body {
+  font-family: var(--font-hand);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--ink);
+  background-color: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern" 1;
+  letter-spacing: 0.01em;
+}
+
+/* ---------- 标题层级：清晰、统一、易读 ---------- */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 0.5em;
+  font-family: var(--font-title);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+  letter-spacing: 0.3px;
+}
+h1 { font-size: clamp(2.2rem, 3.5vw, 3rem); }
+h2 { font-size: clamp(1.7rem, 2.6vw, 2.2rem); }
+h3 { font-size: 1.45rem; }
+h4 { font-size: 1.2rem; }
+h5 { font-size: 1.05rem; }
+h6 { font-size: 0.95rem; }
+
+p { margin: 0 0 0.9em; }
+
+a {
+  color: var(--ink);
+  text-decoration: underline wavy rgba(31, 42, 68, 0.35);
+  text-underline-offset: 4px;
+  transition: color var(--t-fast) var(--ease-out);
+}
+a:hover { color: var(--err); }
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-family: var(--font-subtitle);
+  font-weight: 700;
+}
+
+ul, ol { padding-left: 1.4em; margin: 0.4em 0; }
+li { margin: 0.25em 0; }
+
+img, svg { display: block; max-width: 100%; }
+
+strong { font-weight: 700; color: var(--ink); }
+em { font-style: italic; }
+
+code, pre, kbd, samp {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+}
+code {
+  background: rgba(31, 42, 68, 0.08);
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px dashed rgba(31, 42, 68, 0.2);
+}
+pre {
+  background: rgba(31, 42, 68, 0.06);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-sketch-soft);
+  padding: 12px 16px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.55;
+}
+
+hr {
+  border: none;
+  border-top: 2px dashed rgba(31, 42, 68, 0.25);
+  margin: 1.4em 0;
+}
+
+blockquote {
+  margin: 0.8em 0;
+  padding: 8px 16px;
+  border-left: 4px solid var(--ink);
+  background: rgba(31, 42, 68, 0.04);
+  border-radius: 0 var(--radius-sketch-soft) var(--radius-sketch-soft) 0;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+/* 全局过渡 */
+a, button, .note, .chip, .input, textarea, select, .tab,
+.panel, .modal, .ref-card, .chat-msg {
+  transition:
+    transform var(--t-base) var(--ease-bounce),
+    box-shadow var(--t-base) var(--ease-bounce),
+    border-color var(--t-fast) var(--ease-out),
+    background-color var(--t-fast) var(--ease-out),
+    color var(--t-fast) var(--ease-out),
+    opacity var(--t-fast) var(--ease-out);
+}
+
+/* 选区 */
+::selection {
+  background: var(--note-yellow);
+  color: var(--ink);
+}
+
+/* 滚动条 */
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(31, 42, 68, 0.4);
+  border-radius: 6px;
+  border: 2px solid var(--paper);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--ink); }
+
+/* 焦点环（无障碍但不太突兀） */
+:focus-visible {
+  outline: 3px dashed var(--err);
+  outline-offset: 3px;
+}
+
+/* 工具类 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+[hidden] { display: none !important; }
+
+/* 排版紧凑的标题+装饰线 */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 16px;
+}
+.section-title::after {
+  content: "";
+  flex: 1;
+  height: 8px;
+  background:
+    radial-gradient(circle, var(--ink) 1.5px, transparent 1.5px) 0 50% / 16px 8px repeat-x;
+  opacity: 0.35;
+}

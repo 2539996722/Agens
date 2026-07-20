@@ -1,0 +1,146 @@
+/* ==========================================================================
+   sketch.css — hand-drawn primitives: borders, shadows, jitter, rotations
+   ========================================================================== */
+
+/* ---------- note card (the workhorse) ---------------------------------- */
+.note {
+  position: relative;
+  background: var(--note-yellow);
+  border: 2.5px solid var(--ink);
+  border-radius: var(--radius-sketch);
+  box-shadow: var(--shadow-hard);
+  padding: 18px 22px;
+  margin-bottom: 18px;
+  font-family: var(--font-hand);
+  color: var(--ink);
+}
+
+/* nth-child color rotation (when no explicit theme class) */
+.note:nth-of-type(6n+1) { background: var(--note-yellow); }
+.note:nth-of-type(6n+2) { background: var(--note-pink); }
+.note:nth-of-type(6n+3) { background: var(--note-blue); }
+.note:nth-of-type(6n+4) { background: var(--note-green); }
+.note:nth-of-type(6n+5) { background: var(--note-purple); }
+.note:nth-of-type(6n+6) { background: var(--note-orange); }
+
+/* explicit rotations */
+.note--rotate-0 { transform: rotate(0deg); }
+.note--rotate-1 { transform: rotate(-1.2deg); }
+.note--rotate-2 { transform: rotate(0.8deg); }
+.note--rotate-3 { transform: rotate(1.5deg); }
+.note--rotate-4 { transform: rotate(-0.5deg); }
+.note--rotate-5 { transform: rotate(-1.8deg); }
+.note--rotate-6 { transform: rotate(1.1deg); }
+
+/* alternate radius */
+.note--alt-radius { border-radius: var(--radius-sketch-alt); }
+
+/* tape strip across the top-left, like a real sticky note */
+.note--tape::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 24px;
+  width: 80px;
+  height: 22px;
+  background: rgba(255, 220, 120, 0.55);
+  border: 1px dashed rgba(31, 42, 68, 0.35);
+  transform: rotate(-3deg);
+  box-shadow: 1px 1px 0 rgba(31, 42, 68, 0.18);
+}
+
+/* pin dot in top-right */
+.note--pin::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  width: 14px;
+  height: 14px;
+  background: #d96565;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+/* hover lift */
+.note--lift:hover {
+  transform: translate(-3px, -3px) rotate(0deg);
+  box-shadow: 9px 9px 0 var(--ink);
+}
+.note--rotate-1.note--lift:hover { transform: translate(-3px,-3px) rotate(-1.2deg); }
+.note--rotate-2.note--lift:hover { transform: translate(-3px,-3px) rotate(0.8deg); }
+.note--rotate-3.note--lift:hover { transform: translate(-3px,-3px) rotate(1.5deg); }
+.note--rotate-4.note--lift:hover { transform: translate(-3px,-3px) rotate(-0.5deg); }
+
+/* ---------- dashed sketchy border (for inputs and frames) -------------- */
+.sketch-frame {
+  position: relative;
+  background: #fffdf5;
+  border: 2.5px dashed var(--ink);
+  border-radius: var(--radius-sketch);
+  padding: 20px 22px;
+}
+
+/* ---------- hand-drawn divider ----------------------------------------- */
+.sketch-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0;
+  color: var(--ink-muted);
+  font-family: var(--font-subtitle);
+  font-size: 0.95rem;
+}
+.sketch-divider::before,
+.sketch-divider::after {
+  content: "";
+  flex: 1;
+  height: 0;
+  border-top: 2px dashed var(--ink);
+  opacity: 0.45;
+}
+
+/* ---------- "underline" wave under titles ------------------------------ */
+.sketch-underline {
+  display: inline-block;
+  position: relative;
+  padding-bottom: 4px;
+}
+.sketch-underline::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  height: 8px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 8' preserveAspectRatio='none'><path d='M0,4 Q15,0 30,4 T60,4 T90,4 T120,4' fill='none' stroke='%231f2a44' stroke-width='2.2' stroke-linecap='round'/></svg>") repeat-x;
+  background-size: 120px 8px;
+}
+
+/* ---------- paper texture (turbulence) --------------------------------- */
+.paper-texture {
+  filter: url(#paper-rough);
+}
+
+/* ---------- sticker / chip --------------------------------------------- */
+.sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--note-yellow);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-sketch);
+  box-shadow: 3px 3px 0 var(--ink);
+  font-family: var(--font-subtitle);
+  font-size: 0.95rem;
+}
+
+/* ---------- scribble arrow --------------------------------------------- */
+.scribble-arrow {
+  display: inline-block;
+  width: 36px;
+  height: 14px;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 14'><path d='M2,7 C8,2 16,12 22,7 C26,4 30,9 33,7 M28,3 L33,7 L28,11' fill='none' stroke='%231f2a44' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat center / contain;
+}

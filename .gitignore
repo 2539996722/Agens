@@ -1,0 +1,60 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.tox/
+.venv/
+venv/
+env/
+ENV/
+
+# ===== Node / 前端构建产物（虽然本项目没 npm，未来可能加）=====
+node_modules/
+dist/
+.vite/
+
+# ===== 敏感配置（用户的 key）=====
+backend/data/config.json
+# 注意：保留 backend/data/config.example.json 作为模板
+
+# ===== 系统/编辑器 =====
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+*.iml
+
+# ===== Claude Code 本地状态 =====
+.claude/
+
+# ===== 临时与日志 =====
+*.log
+*.tmp
+*.temp
+.cache/
+.pytest_debug.log
+nohup.out
+*.pid
+
+# ===== 上传/下载 =====
+uploads/
+downloads/
+*.zip
+*.tar.gz
+*.rar
+
+# ===== 浏览器自动生成 =====
+*.local

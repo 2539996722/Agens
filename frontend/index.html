@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 智行助手 · 手绘笔记版</title>
+  <meta name="description" content="一个手绘涂鸦风格的旅游规划与日常聊天助手">
+
+  <!-- 手绘风 favicon：便签上的小地图针 -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='6' y='6' width='52' height='52' rx='3 14 3 14' fill='%23fff6c4' stroke='%231f2a44' stroke-width='3'/><path d='M32 16 C24 16 18 22 18 30 C18 40 32 52 32 52 C32 52 46 40 46 30 C46 22 40 16 32 16 Z' fill='%23ff6b6b' stroke='%231f2a44' stroke-width='2.5'/><circle cx='32' cy='29' r='4' fill='%23fff6c4' stroke='%231f2a44' stroke-width='2'/></svg>">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/paper.css">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/sketch.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+
+  <!-- SVG turbulence filter for paper-rough texture -->
+  <svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+      <filter id="paper-rough">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" seed="3"/>
+        <feDisplacementMap in="SourceGraphic" scale="1.2"/>
+      </filter>
+      <filter id="paper-rough-strong">
+        <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="3" seed="7"/>
+        <feDisplacementMap in="SourceGraphic" scale="2"/>
+      </filter>
+    </defs>
+  </svg>
+</head>
+<body>
+
+  <!-- ============================== NAV ============================== -->
+  <nav class="app-nav" aria-label="主导航">
+    <a href="#" class="brand" aria-label="AI 智行助手">
+      <span class="brand__logo" aria-hidden="true">
+        <svg viewBox="0 0 36 36" width="36" height="36">
+          <rect x="3" y="3" width="30" height="30" rx="2 8 2 8" fill="#fff6c4" stroke="#1f2a44" stroke-width="2.5"/>
+          <path d="M18 9 C13 9 10 12.5 10 17 C10 23 18 31 18 31 C18 31 26 23 26 17 C26 12.5 23 9 18 9 Z" fill="#ff6b6b" stroke="#1f2a44" stroke-width="2"/>
+          <circle cx="18" cy="16.5" r="2.5" fill="#fff6c4" stroke="#1f2a44" stroke-width="1.5"/>
+        </svg>
+      </span>
+      <span class="brand__text">
+        <span class="brand__title">AI 智行助手</span>
+        <span class="brand__sub">端云协同 · 智能出行</span>
+      </span>
+    </a>
+
+    <div class="spacer"></div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab is-active" data-mode="trip" role="tab" aria-selected="true">
+        <span aria-hidden="true">🧳</span> 旅游模式
+      </button>
+      <button class="tab" data-mode="chat" role="tab" aria-selected="false">
+        <span aria-hidden="true">💬</span> 日常聊天
+      </button>
+    </div>
+
+    <button class="icon-btn" id="open-settings-btn" title="设置" aria-label="打开设置">
+      <span aria-hidden="true">⚙️</span>
+    </button>
+  </nav>
+
+  <!-- ============================== MAIN ============================== -->
+  <main class="app-main">
+
+    <!-- ----------------- TRIP MODE ----------------- -->
+    <section class="mode-panel is-active" id="panel-trip" role="tabpanel" aria-labelledby="trip-tab">
+      <div class="panel panel--rotate-1">
+        <header class="panel__head">
+          <div class="panel__icon" aria-hidden="true">📝</div>
+          <div>
+            <h1 class="panel__title">告诉我你的旅行计划</h1>
+            <p class="panel__sub">填一填下面的小卡片，AI 会把行程整理成一页手帐 ✏️</p>
+          </div>
+        </header>
+
+        <form id="trip-form" autocomplete="off">
+          <div class="row">
+            <div class="col-6">
+              <div class="field">
+                <label for="trip-origin">🚌 出发地</label>
+                <input class="input" id="trip-origin" name="origin" type="text" placeholder="例如：北京" required>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="field">
+                <label for="trip-destination">📍 目的地</label>
+                <input class="input" id="trip-destination" name="destination" type="text" placeholder="例如：成都" required>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="field">
+                <label for="trip-days">📅 天数</label>
+                <input class="input" id="trip-days" name="days" type="number" min="1" max="30" value="3" required>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="field">
+                <label for="trip-people">👥 人数</label>
+                <input class="input" id="trip-people" name="people" type="number" min="1" max="50" value="2" required>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="field">
+                <label>🎯 兴趣偏好（可多选）</label>
+                <div class="chip-group" id="trip-interests" role="group" aria-label="兴趣偏好">
+                  <span class="chip chip--pink"   data-value="人文历史">🏯 人文历史</span>
+                  <span class="chip chip--orange" data-value="美食体验">🍜 美食体验</span>
+                  <span class="chip chip--green"  data-value="自然风光">🌲 自然风光</span>
+                  <span class="chip chip--blue"   data-value="现代都市">🌆 现代都市</span>
+                  <span class="chip chip--yellow" data-value="休闲度假">🏖 休闲度假</span>
+                  <span class="chip chip--purple" data-value="文艺体验">🎨 文艺体验</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="field">
+                <label for="trip-extra">📌 额外需求</label>
+                <textarea class="input" id="trip-extra" name="extra" rows="3" placeholder="比如：希望节奏轻松一点、不想太多打卡…"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="sketch-divider">准备好了吗？</div>
+
+          <div class="action-row">
+            <button class="btn btn--primary btn--lg" type="submit" id="trip-submit-btn">
+              <span aria-hidden="true">✨</span> 生成计划
+            </button>
+            <button class="btn btn--danger" type="button" id="trip-cancel-btn" hidden>
+              <span aria-hidden="true">🚫</span> 取消
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- streaming area -->
+      <div class="plan-area" id="plan-area" hidden>
+        <div class="panel panel--rotate-2">
+          <header class="panel__head">
+            <div class="panel__icon" aria-hidden="true">🗒️</div>
+            <div>
+              <h2 class="panel__title">你的行程手帐</h2>
+              <p class="panel__sub">高德数据 + LLM 共同整理</p>
+            </div>
+          </header>
+
+          <details class="reasoning-box" id="reasoning-box">
+            <summary>
+              <span aria-hidden="true">💭</span> 小脑袋在想…
+              <span class="reasoning-box__hint">点击展开推理过程</span>
+            </summary>
+            <pre id="reasoning-pre">(推理过程会出现在这里…)</pre>
+          </details>
+
+          <div id="streaming-status" class="loader" style="margin:8px 0 16px;">
+            <span aria-hidden="true">🪄</span>
+            <span>正在为你整理行程</span>
+            <span class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span>
+          </div>
+
+          <article id="plan-content" class="md" hidden></article>
+
+          <div id="plan-raw" hidden>
+            <pre id="plan-content-pre"></pre>
+          </div>
+
+          <div id="plan-error" class="note note--err" hidden></div>
+
+          <div class="action-row" style="margin-top:18px;">
+            <button class="btn btn--sm" type="button" id="download-md-btn" hidden>
+              <span aria-hidden="true">⬇️</span> 下载 .md
+            </button>
+            <button class="btn btn--sm btn--ghost" type="button" id="copy-md-btn" hidden>
+              <span aria-hidden="true">📋</span> 复制
+            </button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <header class="panel__head">
+            <div class="panel__icon" aria-hidden="true">📍</div>
+            <div>
+              <h2 class="panel__title">引用地点</h2>
+              <p class="panel__sub">来自高德地图的 POI 数据</p>
+            </div>
+          </header>
+          <div id="refs-list" class="refs-grid">
+            <p class="empty-hint">还没出现引用～</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------- CHAT MODE ----------------- -->
+    <section class="mode-panel" id="panel-chat" role="tabpanel" aria-labelledby="chat-tab">
+      <div class="panel">
+        <header class="panel__head">
+          <div class="panel__icon" aria-hidden="true">💬</div>
+          <div>
+            <h1 class="panel__title">和 AI 智行助手聊聊</h1>
+            <p class="panel__sub">可以聊旅行、聊天气、查附近好吃的……需要地图时记得勾上"启用工具"哦</p>
+          </div>
+        </header>
+
+        <div class="chat-window" id="chat-window" aria-live="polite"></div>
+
+        <div class="chat-toolbar">
+          <label class="checkbox">
+            <input type="checkbox" id="tools-enabled" checked>
+            <span class="box">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <polyline points="4,13 10,19 20,5"></polyline>
+              </svg>
+            </span>
+            <span>启用工具调用（高德地图）</span>
+          </label>
+          <button class="btn btn--sm btn--ghost" type="button" id="chat-clear-btn">
+            <span aria-hidden="true">🧹</span> 清空对话
+          </button>
+        </div>
+
+        <form class="chat-input" id="chat-form">
+          <textarea
+            class="input"
+            id="chat-input"
+            rows="2"
+            placeholder="说点什么吧…  (Enter 发送 · Shift+Enter 换行)"
+            required></textarea>
+          <button class="btn btn--primary" type="submit" id="chat-send-btn">
+            <span aria-hidden="true">📨</span> 发送
+          </button>
+          <button class="btn btn--danger" type="button" id="chat-cancel-btn" hidden>
+            <span aria-hidden="true">🚫</span>
+          </button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================== SETTINGS MODAL ============================== -->
+  <div class="modal-backdrop" id="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+    <div class="modal">
+      <header class="modal__header">
+        <h2 class="modal__title" id="settings-title">
+          <span aria-hidden="true">⚙️</span> 配置小本本
+        </h2>
+        <button class="modal__close" id="close-settings-btn" aria-label="关闭">✕</button>
+      </header>
+
+      <form id="settings-form" autocomplete="off">
+
+        <!-- LLM section -->
+        <div class="note note--yellow note--tape note--rotate-1">
+          <h3 class="note__title">
+            <span aria-hidden="true">🧠</span> 大模型 (LLM) 配置
+          </h3>
+
+          <div class="field">
+            <label for="cfg-base-url">🔗 Base URL</label>
+            <input class="input" id="cfg-base-url" type="url" placeholder="https://api.openai.com/v1" required>
+            <span class="field-hint">兼容 OpenAI 协议的服务地址（末尾不带 /）</span>
+          </div>
+
+          <div class="field">
+            <label for="cfg-api-key">🔑 API Key</label>
+            <div class="password-wrap">
+              <input class="input" id="cfg-api-key" type="password" placeholder="sk-..." required>
+              <button type="button" class="password-toggle" id="toggle-key-btn" aria-label="显示 / 隐藏 Key">👀</button>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="cfg-model">🤖 模型</label>
+              <input class="input" id="cfg-model" type="text" placeholder="MiniMax-M3" required>
+              <span class="field-hint">例如 <code>MiniMax-M3</code>（注意大小写和连字符 <code>-</code>，不能用空格）</span>
+            </div>
+            <div class="field" style="justify-content:flex-end;">
+              <label class="field-inline" style="margin-top:24px;">
+                <span class="switch">
+                  <input type="checkbox" id="cfg-reasoning-split">
+                  <span class="track"><span class="knob"></span></span>
+                </span>
+                <span>分离 reasoning 输出</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="action-row" style="margin-top:8px;">
+            <button class="btn btn--sm" type="button" id="test-llm-btn">
+              <span aria-hidden="true">🧪</span> 测试 LLM 连接
+            </button>
+            <span id="test-llm-result"></span>
+          </div>
+        </div>
+
+        <!-- Amap section -->
+        <div class="note note--blue note--pin note--rotate-2">
+          <h3 class="note__title">
+            <span aria-hidden="true">🗺️</span> 高德地图 配置
+          </h3>
+
+          <div class="field">
+            <label for="cfg-amap-key">🔑 高德 API Key（简单 key 模式）</label>
+            <div class="password-wrap">
+              <input class="input" id="cfg-amap-key" type="password" placeholder="a1b2c3d4..." required>
+              <button type="button" class="password-toggle" id="toggle-amap-btn" aria-label="显示 / 隐藏 Key">👀</button>
+            </div>
+            <span class="field-hint">在 <a href="https://lbs.amap.com/" target="_blank" rel="noopener">lbs.amap.com</a> 申请 Web 服务 Key</span>
+          </div>
+
+          <div class="action-row" style="margin-top:8px;">
+            <button class="btn btn--sm btn--blue" type="button" id="test-amap-btn">
+              <span aria-hidden="true">🧪</span> 测试高德连接
+            </button>
+            <span id="test-amap-result"></span>
+          </div>
+        </div>
+
+        <div class="modal__footer">
+          <button class="btn btn--ghost" type="button" id="cancel-settings-btn">
+            <span aria-hidden="true">❌</span> 取消
+          </button>
+          <button class="btn btn--green" type="submit" id="save-settings-btn">
+            <span aria-hidden="true">💾</span> 保存配置
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================== SCRIPTS ============================== -->
+  <script src="js/api.js"></script>
+  <script src="js/markdown.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/trip.js"></script>
+  <script src="js/chat.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
