@@ -58,3 +58,10 @@ downloads/
 
 # ===== 浏览器自动生成 =====
 *.local
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
